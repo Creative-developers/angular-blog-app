@@ -1,0 +1,37 @@
+<div class="pagination d-flex justify-content-center" *ngIf="loadPagination && totalItems > perPage">
+    <div class="pagination-info"></div>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" [ngClass]="{ disabled: isFirstPage }">
+                <a class="page-link" (click)="changePageNumber(currentPage - 1)" href="javascript:void(0)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item" *ngIf="hasFirst">
+                <a class="page-link" (click)="changePageNumber(1)"> 1 </a>
+            </li>
+            <li class="page-item disabled" *ngIf="hasFirst">
+                <a class="page-link">...</a>
+            </li>
+            <li class="page-item" *ngFor="let page of pages; let i = index" [attr.data-index]="i" [ngClass]="{ active: currentPage === page }">
+                <a class="page-link" (click)="changePageNumber(page)">
+          {{ page }}
+        </a>
+            </li>
+            <li class="page-item disabled" *ngIf="hasLast">
+                <a class="page-link">...</a>
+            </li>
+            <li class="page-item" *ngIf="hasLast">
+                <a class="page-link" (click)="changePageNumber(totalItems)">{{ totalItems }}
+        </a>
+            </li>
+            <li class="page-item" [ngClass]="{ disabled: isLastPage }">
+                <a class="page-link" (click)="changePageNumber(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

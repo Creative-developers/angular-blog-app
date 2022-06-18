@@ -1,0 +1,40 @@
+<!-- Page content-->
+<div class="container">
+    <div class="row" *ngIf="isUserAuthenteicated; else requestDenied">
+        <div class="col-12 col-md-4 border border-top-0 border-left-0 border-bottom-0">
+            <ul class="list-group">
+                <li class="list-group-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <a routerLink="/users/profile/{{ user.user.username }}" class="d-block">Manage Profile Settings</a
+          >
+        </li>
+        <li class="list-group-item" routerLinkActive="active">
+          <a
+            routerLink="/users/profile/{{ user.user.username }}/change-password"
+            class="d-block"
+            >Change Password</a
+          >
+        </li>
+        <li class="list-group-item" routerLinkActive="active">
+          <a
+            routerLink="/users/profile/{{ user.user.username }}/posts"
+            class="d-block"
+            >Manage Posts</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-8">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <ng-template #requestDenied>
+    <div class="d-flex">
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          You are not authenticated to access this page.
+        </div>
+        <p><a [routerLink]="['/']">Go Back</a></p>
+        </div>
+    </div>
+    </ng-template>
+</div>

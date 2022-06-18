@@ -1,0 +1,87 @@
+<section>
+    <div class="section-header">
+        <h4>Edit Profile</h4>
+        <hr />
+    </div>
+    <div class="section-body">
+        <alert></alert>
+        <form [formGroup]="form" (ngSubmit)="submitForm()">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': isSubmitted && f.firstName.errors }" />
+                <div *ngIf="isSubmitted && f.firstName.errors" class="invalid-feedback">
+                    <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                    <div *ngIf="f.firstName.errors.minlength">
+                        First name should be at least 3 characters
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="firstName">Last Name</label>
+                <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': isSubmitted && f.lastName.errors }" />
+                <div *ngIf="isSubmitted && f.lastName.errors" class="invalid-feedback">
+                    <div *ngIf="f.lastName.errors.minlength">
+                        Last name should be at least 3 characters
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="firstName">Email Address</label>
+                <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': isSubmitted && f.email.errors }" />
+                <div *ngIf="isSubmitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email Address is required</div>
+                    <div *ngIf="f.email.errors.minlength">
+                        Email Address should be at least 3 characters
+                    </div>
+                    <div *ngIf="f.email.errors.email">Email Address should be valid</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="username">Userame</label>
+                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': isSubmitted && f.username.errors }" />
+                <div *ngIf="isSubmitted && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">Username is required</div>
+                    <div *ngIf="f.username.errors.minlength">
+                        Username should be at least 4 characters
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone_num">Phone Number</label>
+                <input type="text" formControlName="phoneNumber" class="form-control" [ngClass]="{ 'is-invalid': isSubmitted && f.phoneNumber.errors }" />
+                <div *ngIf="isSubmitted && f.phoneNumber.errors" class="invalid-feedback">
+                    <div *ngIf="f.phoneNumber.errors.required">
+                        Phone number is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="porfileImage">Select Image</label>
+                <input type="file" class="form-control" (change)="onFileChange($event)" [ngClass]="{ 'is-invalid': isSubmitted && f.profileImage.errors }" />
+                <input type="hidden" name="fileHidden" formControlName="profileImage" />
+
+                <div *ngIf="isSubmitted && f.profileImage.errors" class="invalid-feedback">
+                    <div *ngIf="f.profileImage.errors.required">
+                        Profile Image is required
+                    </div>
+                    <div *ngIf="f.profileImage.errors.imageType">
+                        Only jpg,png,jpeg files are allowed
+                    </div>
+                    <div *ngIf="f.profileImage.errors.maxSize">Max file size is 2MB</div>
+                </div>
+            </div>
+
+            <div *ngIf="profileImage && profileImage !== ''" class="mb-3">
+                <img [src]="profileImage" [alt]="form.value.name" class="img-fluid" />
+            </div>
+
+            <button type="submit" [disabled]="loading" class="btn btn-lg btn-primary mb-3">
+        <span
+          *ngIf="loading"
+          class="spinner-border spinner-border-sm mr-1"
+        ></span>
+        Save
+      </button>
+        </form>
+    </div>
+</section>

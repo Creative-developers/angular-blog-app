@@ -1,0 +1,71 @@
+<section>
+    <div class="section-body">
+        <!-- <alert></alert> -->
+        <alert></alert>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Posts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div clas="posts-listing" *ngIf="posts && posts.length > 0; else noPosts">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Image</th>
+                                            <th>Category</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let post of pagePosts">
+                                            <td>{{ post.title }}</td>
+                                            <td *ngIf="post.body.length > 25; else postInfo">
+                                                <div class="postsOuterCSS" [innerHTML]="post.body.substring(0, 25)"></div>
+                                            </td>
+                                            <ng-template #postInfo>
+                                                <td>{{ post.body }}</td>
+                                            </ng-template>
+
+                                            <td>
+                                                <img *ngIf="post.featuredImage; else noImage" [src]="uploadsUrl + '/posts/' + post.featuredImage" alt="post image " width="100 " />
+                                                <ng-template #noImage>
+                                                    <img title="No Image" src="assets/images/no-image.jpeg" alt="no image" width="60" />
+                                                </ng-template>
+                                            </td>
+                                            <td>
+                                                {{ getCategories(post.categories) }}
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-warning" [routerLink]="['/posts/edit', post._id]">Edit</a
+                        >
+                        <a
+                          class="btn btn-sm btn-danger"
+                          (click)="deletePost(post)"
+                          >Delete</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination
+                [perPage]="perPage"
+                [currentPage]="currentPage"
+                [totalItems]="totalPosts"
+                (changePage)="changePageNumber($event)"
+              ></pagination>
+            </div>
+            <ng-template #noPosts>
+              <p>No Posts found.</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

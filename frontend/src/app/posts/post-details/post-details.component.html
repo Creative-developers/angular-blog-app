@@ -1,0 +1,105 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8" id="test">
+            <alert></alert>
+            <div *ngIf="loading; else loadPosts" class="d-flex justify-content-center p-5">
+                <div class="loader"></div>
+            </div>
+
+            <ng-template #loadPosts>
+                <div *ngIf="post; else notFound">
+                    <!-- Post content-->
+                    <article *ngIf="post">
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">
+                                Posted on {{ parsePostDate(post, createdAt) }} by {{ post.user.username }}
+                            </div>
+                            <!-- Post categories-->
+
+                            <a [routerLink]="['/category/', category.slug]" *ngFor="let category of post.categories; let i = index" class="mr-1">
+                                <span class="badge badge-primary">{{ category.name }}</span>
+                            </a>
+                        </header>
+                        <!-- Preview image figure-->
+                        <figure class="mb-4">
+                            <img class="img-fluid rounded" [src]="getPostImage(post)" [alt]="post.title" />
+                        </figure>
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <div [innerHTML]="post.body"></div>
+                        </section>
+                    </article>
+                    <!-- Comments section-->
+                    <section class="mb-5" id="comments">
+                        <div class="card bg-light">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    Total {{ totalComments }} Comment{{ totalComments > 1 ? "s" : "" }}
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div *ngIf="user; else notLoggedIn">
+                                    <form class="mb-4" [formGroup]="form">
+                                        <div class="comment-form position-relative form-group">
+                                            <textarea class="form-control" name="body" [ngStyle]="{
+                          'pointer-events': commentFormLoading ? 'none' : 'auto'
+                        }" [ngClass]="{
+                          'is-invalid': isSubmitted && f.body.errors
+                        }" formControlName="body" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                            <a *ngIf="commentFormLoading" class="spinner-border spinner-border-sm mr-1"></a>
+                                            <a *ngIf="!commentFormLoading" (click)="submitForm($event)"><i class="fas fa-paper-plane text-primary"></i
+                      ></a>
+                                        </div>
+                                    </form>
+                                </div>
+                                <ng-template #notLoggedIn>
+                                    <p>
+                                        <a (click)="openLoginModal($event)" class="text-link" [ngStyle]="{ 'text-decoration': 'underline' }">Log in</a
+                    >
+                    to start the discussion
+                  </p>
+                </ng-template>
+
+                <div *ngIf="totalComments; else noComments" id="comments-area">
+                  <div class="d-flex mb-3" *ngFor="let comment of comments">
+                    <comments
+                      id="comment-{{ comment._id }}"
+                      (addComment)="refreshComments($event)"
+                      [comment]="comment"
+                      [postId]="post._id"
+                      class="w-100"
+                    >
+                    </comments>
+                  </div>
+                </div>
+                <ng-template #noComments>
+                  <div class="alert alert-info">
+                    <strong>No comments</strong>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+
+            <!-- <comments [postId]="post._id"></comments> -->
+          </section>
+        </div>
+
+        <ng-template #notFound>
+          <a
+            class="btn btn-default text-decoration-underline"
+            [routerLink]="['/']"
+            >Go Back ></a
+          >
+        </ng-template>
+      </ng-template>
+    </div>
+    <!-- Side widgets-->
+    <div class="col-12 col-md-4">
+      <sidebar></sidebar>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div *ngIf="loading" class="col-lg-8 d-flex justify-content-center p-5">
+                <div class="loader"></div>
+            </div>
+            <div *ngIf="totalPosts === 0 && !loading">
+                <p class="text-center">No Posts found for {{ search || search }}...</p>
+            </div>
+            <div *ngIf="totalPosts > 0 && !loading">
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row pb-4">
+                    <div class="col-12">
+                        <h3>
+                            {{ totalPosts }} Posts found for '<strong>{{ search }}</strong
+              >'
+            </h3>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-12 col-md-4 col-lg-6"
+            *ngFor="let post of perPagePosts; let i = index"
+          >
+            <!-- Blog post-->
+            <div class="card post-card mb-4">
+              <a href="#!"
+                ><img class="card-img-top" [src]="getPostImage(post)" alt="..."
+              /></a>
+              <div class="post-categories">
+                <a
+                  *ngFor="let category of post.categories; let i = index"
+                  class="mr-1"
+                >
+                  <span class="badge badge-primary">{{ category.name }}</span>
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="small text-muted">
+                  {{ parsePostDate(post.createdAt) }}
+                </div>
+
+                <h2 class="card-title h4">{{ post.title }}</h2>
+                <p class="card-text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Reiciendis aliquid atque, nulla.
+                </p>
+                <a class="btn btn-primary" routerLink="{{ getPostLink(post) }}"
+                  >Read more →</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination-->
+        <pagination
+          [perPage]="perPage"
+          [currentPage]="currentPage"
+          [totalItems]="totalPosts"
+          (changePage)="changePageNumber($event)"
+        ></pagination>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <sidebar></sidebar>
+    </div>
+  </div>
+</div>

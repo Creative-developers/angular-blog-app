@@ -1,0 +1,16 @@
+.comment-form {}
+
+.comment-form a {
+    z-index: 999;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0.75rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    transform: rotateZ(45deg);
+}
+
+#comments-area {
+    max-height: 30rem;
+    overflow: auto;
+}

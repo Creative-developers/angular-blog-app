@@ -1,0 +1,211 @@
+<!-- The Modal -->
+<ng-template #content let-modal>
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h4 class="modal-title">Log in to our Blog</h4>
+        <button type="button" class="btn-close" (click)="modal.close()" data-bs-dismiss="modal"></button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body">
+        <alert></alert>
+        <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+            <div [innerHTML]="errorMessages"></div>
+            <div class="form-group">
+                <input type="text" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': isSubmitted && f.username.errors }" name="username" placeholder="Username or Email Address*" />
+                <div *ngIf="isSubmitted && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">
+                        Username or Email Address is required
+                    </div>
+                    <div *ngIf="f.username.errors.minlength">
+                        Username or Email Address must be atleast 4 characters
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" formControlName="password" name="password" [ngClass]="{
+            'is-invalid': isSubmitted && f.password.errors
+          }" placeholder="Password*" />
+                <div *ngIf="isSubmitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                    <div *ngIf="f.password.errors.minlength">
+                        Password must be atleast 6 characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button [disabled]="loading" type="submit" class="btn btn-primary btn-block">
+          <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm mr-1"
+          ></span>
+          Log In
+        </button>
+            </div>
+
+            <p>
+                New User ?
+                <a href="#" data-toggle="modal" (click)="openRegisterModal($event)" class="text-primary">Sign Up</a
+        >
+      </p>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #signupcontent let-signupmodal>
+  <!-- Modal Header -->
+  <div class="modal-header">
+    <h4 class="modal-title">Register your account now</h4>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="signupmodal.close()"
+      data-bs-dismiss="modal"
+    ></button>
+  </div>
+
+  <!-- Modal body -->
+  <div class="modal-body">
+    <alert></alert>
+    <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+      <div [innerHTML]="errorMessages"></div>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="firstName"
+          name="firstName"
+          placeholder="First Name*"
+          [ngClass]="{
+            'is-invalid': isRegisterationSubmitted && rF.firstName.errors
+          }"
+        />
+        <div
+          *ngIf="isRegisterationSubmitted && rF.firstName.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rF.firstName.errors.required">First name is required</div>
+          <div *ngIf="rF.firstName.errors.minlength">
+            First name must be atleast 4 characters
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="lastName"
+          placeholder="Last Name"
+          [ngClass]="{
+            'is-invalid': isRegisterationSubmitted && rF.lastName.errors
+          }"
+        />
+        <div
+          *ngIf="isRegisterationSubmitted && rF.lastName.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rF.lastName.errors.minlength">
+            Last name must be atleast 4 characters
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Email*"
+          formControlName="email"
+          [ngClass]="{
+            'is-invalid': isRegisterationSubmitted && rF.email.errors
+          }"
+        />
+        <div
+          *ngIf="isRegisterationSubmitted && rF.email.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rF.email.errors.required">Email Address is required</div>
+          <div *ngIf="rF.email.errors.email">Invalid Email Address</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="username"
+          name="username"
+          placeholder="Username*"
+          [ngClass]="{
+            'is-invalid': isRegisterationSubmitted && rF.username.errors
+          }"
+        />
+        <div
+          *ngIf="isRegisterationSubmitted && rF.username.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rF.username.errors.required">Username is required</div>
+          <div *ngIf="rF.username.errors.minlength">
+            Username must be atleast 4 characters
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          name="password"
+          placeholder="Password*"
+          [ngClass]="{
+            'is-invalid': isRegisterationSubmitted && rF.password.errors
+          }"
+        />
+        <div
+          *ngIf="isRegisterationSubmitted && rF.password.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rF.password.errors.required">Password is required</div>
+          <div *ngIf="rF.password.errors.minlength">
+            Password must be atleast 6 characters
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          class="form-control"
+          placeholder="Confirm Password*"
+          [ngClass]="{
+            'is-invalid': isRegisterationSubmitted && rF.confirmPassword.errors
+          }"
+        />
+        <div
+          *ngIf="isRegisterationSubmitted && rF.confirmPassword.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rF.confirmPassword.errors.required">
+            Confirm Password is required
+          </div>
+          <div *ngIf="rF.confirmPassword.errors.notEquivalent">
+            Passwords and do no Cofirm Passwords do not match
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button
+          [disabled]="loading"
+          type="submit"
+          class="btn btn-primary btn-block"
+        >
+          <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm mr-1"
+          ></span>
+          Sign up
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

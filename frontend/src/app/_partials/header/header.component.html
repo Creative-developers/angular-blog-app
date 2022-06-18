@@ -1,0 +1,101 @@
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" [routerLink]="['/']">Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" [routerLink]="['/']">Home</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="user">
+          <a [routerLink]="['/posts/create']" class="nav-link"> Create Post </a>
+                </li>
+                <li class="nav-item dropdown" ngbDropdown>
+                    <a class="nav-link" href="javascript:void(0)" ngbDropdownToggle>Categories</a
+          >
+          <ul
+            class="dropdown-menu"
+            *ngIf="categories !== undefined"
+            role="menu"
+            ngbDropdownMenu
+          >
+            <li
+              class="dropdown-item"
+              *ngFor="let category of categories; let i = index"
+              [attr.data-index]="i"
+            >
+              <a
+                [routerLink]="['category', category.slug]"
+                href="javascript:void(0)"
+                >{{ category.name }}
+              </a>
+                </li>
+            </ul>
+            </li>
+            <li class="nav-item dropdown" ngbDropdown>
+                <a class="nav-link" role="button" ngbDropdownToggle>Profile</a>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <div *ngIf="user; then thenBlock; else elseBlock"></div>
+                    <ng-template #thenBlock>
+                        <li>
+                            <a class="dropdown-item" [routerLink]="['users/profile', user.username]" href="javascript:void(0)">Edit User</a
+                >
+              </li>
+
+              <li></li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="javascript:void(0)"
+                  (click)="logout()"
+                  >Logout</a
+                >
+              </li>
+            </ng-template>
+            <ng-template #elseBlock>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="javascript:void(0)"
+                  (click)="openLoginModal($event)"
+                  >Login</a
+                >
+              </li>
+            </ng-template>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- Page header with logo and tagline-->
+<header class="py-5 bg-light border-bottom mb-4">
+  <div class="container">
+    <div class="text-center my-5">
+      <h1 class="fw-bolder">
+        Hello
+        <strong>{{ user ? user.firstName + " " + user.lastName : "" }}</strong>
+        Welcome to Blog Home!
+      </h1>
+      <p class="lead mb-0">
+        A Bootstrap 5 starter layout for your next blog homepage
+      </p>
+      <p class="text-center mt-4" *ngIf="user; else loginUser">
+        <a class="btn btn-primary" [routerLink]="['/posts/create']">
+          Create a new blog post
+        </a>
+                            </p>
+                            <ng-template #loginUser>
+                                <p class="text-center mt-4">
+                                    <button class="btn btn-primary" (click)="openLoginModal($event)">
+            Create new blog post
+          </button>
+                                </p>
+                            </ng-template>
+        </div>
+    </div>
+    </header>

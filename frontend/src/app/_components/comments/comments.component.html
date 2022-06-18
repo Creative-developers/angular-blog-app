@@ -1,0 +1,47 @@
+<div class="d-flex comment-box" [ngStyle]="{ 'margin-left': calculateDepth(comment.depth) }">
+    <div class="flex-shrink-0">
+        <img class="rounded-circle img-fluid" [ngStyle]="{ width: '50px' }" [src]="getUserImage(comment)" alt="... " />
+    </div>
+    <div class="ml-3 w-100">
+        <div class="d-flex flex-direction-col align-items-baseline">
+            <h6>{{ comment.user.name }}</h6>
+            <span class="ml-3">{{ comment.postedDate | dateAsAgo }}</span>
+        </div>
+
+        <p>{{ comment.body }}</p>
+        <p *ngIf="comment.depth < 3 && user">
+            <a class="text-decoration-underline" (click)="toggleReplyTo(comment._id)">Reply</a
+      >
+    </p>
+    <div *ngIf="showReply" class="mt-2">
+      <form class="mb-4" [formGroup]="replyForm">
+        <div class="comment-form position-relative form-group">
+          <textarea
+            [ngStyle]="{
+              'pointer-events': loading ? 'none' : 'auto'
+            }"
+            class="form-control"
+            name="body"
+            [ngClass]="{
+              'is-invalid': isSubmitted && f.body.errors
+            }"
+            formControlName="body"
+            rows="3"
+            placeholder="Replying to {{ comment.user.name }}"
+          ></textarea>
+
+          <a *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></a>
+
+            <a *ngIf="!loading" (click)="replyToComment($event)"><i class="fas fa-paper-plane text-primary"></i
+          ></a>
+    </div>
+    </form>
+</div>
+</div>
+</div>
+<!-- <div *ngIf="comment.childrens && comment.childrens.length > 0">
+    <div class="d-flex mt-2" *ngFor="let comment of comment.childrens" [ngStyle]="{ 'margin-left': calculateDepth(comment.depth) }">
+        <comments (addComment)="refreshComments($event)" [comment]="comment" [postId]="postId" class="w-100">
+        </comments>
+    </div>
+</div> -->

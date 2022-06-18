@@ -1,0 +1,94 @@
+<!-- Page content-->
+<div class="container">
+    <alert></alert>
+
+    <div class="row">
+        <div *ngIf="loading" class="col-lg-8 d-flex justify-content-center p-5">
+            <div class="loader"></div>
+        </div>
+        <!-- Blog entries-->
+        <div *ngIf="!loading && !posts.length" class="col-lg-8 d-flex justify-content-center">
+            <p>No Posts found...</p>
+        </div>
+        <div class="col-lg-8" *ngIf="posts.length !== undefined && posts.length && !loading">
+            <!-- Featured blog post-->
+            <div class="card post-card mb-4">
+                <a routerLink="{{ getPostLink(featuredPost) }}"><img class="card-img-top" [src]="getPostImage(featuredPost)" alt="..." /></a>
+
+                <div class="card-body">
+                    <div class="d-flex flex-row">
+                        <div class="post-categories">
+                            <a *ngFor="let category of featuredPost.categories; let i = index" class="mr-1">
+                                <span class="badge badge-primary">{{ category.name }}</span>
+                            </a>
+                        </div>
+                        <div class="post-comments ml-2">
+                            <a routerLink="{{ getPostLink(featuredPost) }}" fragment="comments" title="Total {{ featuredPost.comments.length }} Comments">
+                                <i class="fas fa-comment-alt"></i>
+                                <span class="pl-2">{{ featuredPost.comments.length }}</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="small text-muted">
+                        {{ parsePostDate(featuredPost.createdAt) }}
+                    </div>
+                    <h2 class="card-title">{{ featuredPost.title }}</h2>
+                    <p class="card-text" [innerHTML]="featuredPost.body.substr(0, 250)"></p>
+                    <a class="btn btn-primary" routerLink="{{ getPostLink(featuredPost) }}">Read more →</a
+          >
+        </div>
+      </div>
+      <!-- Nested row for non-featured blog posts-->
+      <div class="row">
+        <div
+          class="col-12 col-md-4 col-lg-6"
+          *ngFor="let post of perPagePosts; let i = index"
+        >
+          <!-- Blog post-->
+          <div class="card post-card mb-4">
+            <a href="#!"
+              ><img class="card-img-top" [src]="getPostImage(post)" alt="..."
+            /></a>
+                    <div class="card-body">
+                        <div class="d-flex flex-row">
+                            <div class="post-categories">
+                                <a *ngFor="let category of post.categories; let i = index" class="mr-1">
+                                    <span class="badge badge-primary">{{ category.name }}</span>
+                                </a>
+                            </div>
+                            <div class="post-comments ml-2">
+                                <a routerLink="{{ getPostLink(post) }}" fragment="comments" title="Total {{ post.comments.length }} Comments">
+                                    <i class="fas fa-comment-alt"></i>
+                                    <span class="pl-2">{{ post.comments.length }}</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="small text-muted">
+                            {{ parsePostDate(post.createdAt) }}
+                        </div>
+
+                        <h2 class="card-title h4">{{ post.title }}</h2>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.
+                        </p>
+                        <a class="btn btn-primary" routerLink="{{ getPostLink(post) }}">Read more →</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pagination-->
+      <pagination
+        [perPage]="perPage"
+        [currentPage]="currentPage"
+        [totalItems]="totalPosts"
+        (changePage)="changePageNumber($event)"
+      ></pagination>
+    </div>
+    <!-- Side widgets-->
+    <div class="col-lg-4">
+      <sidebar></sidebar>
+    </div>
+  </div>
+</div>
